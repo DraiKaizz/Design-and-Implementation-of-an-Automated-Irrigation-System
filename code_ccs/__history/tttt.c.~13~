@@ -1,0 +1,26 @@
+#include <16F877A.h>
+#device ADC=10
+#fuses NOWDT, PUT, HS, NOPROTECT, NOLVP, XT
+#use delay(clock=20M)
+
+
+void main()
+{
+set_tris_b(0b00000001);
+set_tris_d(0b00000000);
+while(true)
+{
+  if(input(pin_b0) == 1)
+  {
+   output_high(pin_d1);
+   delay_ms(200);
+   output_low(pin_d1);
+   delay_ms(200);
+  
+  }
+  else if(input(pin_b0) == 0)
+  {
+   output_low(pin_d1);
+  }
+}
+}

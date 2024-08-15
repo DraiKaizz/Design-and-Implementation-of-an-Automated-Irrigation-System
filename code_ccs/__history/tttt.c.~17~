@@ -1,0 +1,25 @@
+#include <16F877A.h>
+#device ADC=8 *= 16
+#fuses  HS
+#use delay(clock=4M)
+#define LAMP PIN_D1
+
+void main()
+{
+set_tris_b(0b00000001);
+while(true)
+{
+  if(input(pin_b0) == 1)
+  {
+
+   output_high(LAMP);
+   delay_ms(200); 
+
+  }
+  else 
+  {
+   output_low(LAMP);
+   
+  }
+}
+}

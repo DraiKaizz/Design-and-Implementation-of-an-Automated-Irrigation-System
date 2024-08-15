@@ -1,0 +1,15 @@
+#include <16F877A.h>
+#device ADC=10
+#include <string.h>
+#include <math.h>
+#fuses NOWDT, PUT, HS, NOPROTECT, NOLVP, XT
+#use delay(clock=20M)
+#define LAMP PIN_B0
+
+void main()
+{
+output_high(LAMP);
+delay_ms(100);
+output_low(LAMP);
+delay_ms(100);
+}

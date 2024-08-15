@@ -1,0 +1,326 @@
+000     INDF
+001     TMR0
+002     PCL
+003     STATUS
+004     FSR
+004-005 @WRITE_PROGRAM_MEMORY8.P1
+004-005 @READ_PROGRAM_MEMORY8.P2
+005     PORTA
+005.0   RA0
+005.1   RA1
+005.2   RA2
+005.3   RA3
+005.4   RA4
+005.5   RA5
+006     PORTB
+006.0   RB0
+006.1   RB1
+006.2   RB2
+006.3   RB3
+006.4   RB4
+006.5   RB5
+006.6   RB6
+006.7   RB7
+007     PORTC
+007.0   RC0
+007.1   RC1
+007.2   RC2
+007.3   RC3
+007.4   RC4
+007.5   RC5
+007.6   RC6
+007.7   RC7
+008     PORTD
+008     PSP_DATA
+008.0   RD0
+008.1   RD1
+008.2   RD2
+008.3   RD3
+008.4   RD4
+008.5   RD5
+008.6   RD6
+008.7   RD7
+009.0   RE0
+009     PORTE
+009.1   RE1
+009.2   RE2
+00A     PCLATH
+00B     INTCON
+00B.0   rbif
+00B.1   int0if
+00B.2   tmr0if
+00B.3   rbie
+00B.4   int0ie
+00B.5   tmr0ie
+00B.6   peie
+00B.7   gie
+00C     PIR1
+00C.0   tmr1if
+00C.1   tmr2if
+00C.2   ccp1if
+00C.3   sspif
+00C.4   txif
+00C.5   rcif
+00C.6   adif
+00C.7   pspif
+00D     PIR2
+00D.0   ccp2if
+00D.3   bclif
+00D.4   eeif
+00D.6   cmif
+015     CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01B     CCP_2
+01B     CCP_2_LOW
+01C     CCP_2_HIGH
+01F     ADCON0
+01F.3   CHS0
+01F.4   CHS1
+01F.5   CHS2
+020-021 strtok.save
+022     @TRIS_C
+023     button_tt1
+024     button_tt2
+025     button_tt3
+026     bien1
+027     bien2
+028     bien3
+029-02A adc_value1
+02B-02C adc_value2
+02D-02E adc_value3
+02F-032 humidity
+033-036 Inte
+037-03A Temp
+03B     LCD_SetPosition.cX
+03B-03E @FLT.P1
+03B-03C @ITOF.P2
+03B-03E atan2.y
+03B     @PSTRINGCN7_1006.P1
+03B-03E @PRINTF_L32D_1006FPFPF.P2
+03B-03E @ADDFF.P3
+03B     Doc_ADC.@SCRATCH1
+03B     MAIN.@SCRATCH1
+03B     @PSTRINGC7_1006.@SCRATCH1
+03C     Doc_ADC.@SCRATCH2
+03C     @PSTRINGC7_1006.@SCRATCH2
+03C     @PSTRINGCN7_1006.@SCRATCH1
+03D     Doc_ADC.@SCRATCH3
+03D     @PSTRINGC7_1006.@SCRATCH3
+03D     @PSTRINGCN7_1006.@SCRATCH2
+03E     Doc_ADC.@SCRATCH4
+03E     @PSTRINGC7_1006.@SCRATCH4
+03E     @PSTRINGCN7_1006.@SCRATCH3
+03F-042 atan2.x
+03F     @PRINTF_L32D_1006FPFPF.P1
+03F-042 @ADDFF.P2
+03F-042 @FLT.P3
+03F-042 @DIVFF.P4
+03F     @PSTRINGCN7_1006.@SCRATCH4
+040     @PRINTF_L32D_1006FPFPF.@SCRATCH1
+041     @PRINTF_L32D_1006FPFPF.@SCRATCH2
+042     @PRINTF_L32D_1006FPFPF.@SCRATCH3
+043-046 atan2.z
+043-046 @DIVFF.P1
+043     @FLT.@SCRATCH1
+043     @ADDFF.@SCRATCH1
+043     @PRINTF_L32D_1006FPFPF.@SCRATCH4
+044     @FLT.@SCRATCH2
+044     @ADDFF.@SCRATCH2
+044     @PRINTF_L32D_1006FPFPF.@SCRATCH5
+045     @ADDFF.@SCRATCH3
+045     @PRINTF_L32D_1006FPFPF.@SCRATCH6
+046     @ADDFF.@SCRATCH4
+046     @PRINTF_L32D_1006FPFPF.@SCRATCH7
+047.0   atan2.sign
+047     @ADDFF.@SCRATCH5
+047     @DIVFF.@SCRATCH1
+047     @PRINTF_L32D_1006FPFPF.@SCRATCH8
+048     LCD_PutChar.cX
+048-04B @MULFF.P1
+048     atan2.quad
+048-04B @DIV3232.P1
+048-04B @FTOSD.P2
+048     @ADDFF.@SCRATCH6
+048     @DIVFF.@SCRATCH2
+049     LCD_PutCmd.cX
+049     @ADDFF.@SCRATCH7
+049     @DIVFF.@SCRATCH3
+04A     @delay_ms1.P1
+04A     LCD_SetData.cX
+04A     @ADDFF.@SCRATCH8
+04A     @DIVFF.@SCRATCH4
+04B     @DIVFF.@SCRATCH5
+04C-04F @MULFF.P1
+04C-04F @DIV3232.P2
+04C     @DIVFF.@SCRATCH6
+04C     @FTOSD.@SCRATCH1
+050     @MULFF.@SCRATCH1
+050     @DIV3232.@SCRATCH1
+051     @MULFF.@SCRATCH2
+051     @DIV3232.@SCRATCH2
+052     @MULFF.@SCRATCH3
+052     @DIV3232.@SCRATCH3
+053     @MULFF.@SCRATCH4
+053     @DIV3232.@SCRATCH4
+054     @MULFF.@SCRATCH5
+054     @DIV3232.@SCRATCH5
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+081     OPTION_REG
+081.0   ps0
+081.1   ps1
+081.2   ps2
+081.3   psa
+081.4   t0se
+081.5   t0cs
+081.6   intedg
+081.7   not_rbpu
+085.0   TRISA0
+085     TRISA
+085.1   TRISA1
+085.2   TRISA2
+085.3   TRISA3
+085.4   TRISA4
+085.5   TRISA5
+086     TRISB
+086.0   TRISB0
+086.1   TRISB1
+086.2   TRISB2
+086.3   TRISB3
+086.4   TRISB4
+086.5   TRISB5
+086.6   TRISB6
+086.7   TRISB7
+087.0   TRISC0
+087     TRISC
+087.1   TRISC1
+087.2   TRISC2
+087.3   TRISC3
+087.4   TRISC4
+087.5   TRISC5
+087.6   TRISC6
+087.7   TRISC7
+088     TRISD
+088.0   TRISD0
+088.1   TRISD1
+088.2   TRISD2
+088.3   TRISD3
+088.4   TRISD4
+088.5   TRISD5
+088.6   TRISD6
+088.7   TRISD7
+089.0   TRISE0
+089     TRISE
+089.1   TRISE1
+089.2   TRISE2
+08C.0   tmr1ie
+08C     PIE1
+08C.1   tmr2ie
+08C.2   ccp1ie
+08C.3   sspie
+08C.4   txie
+08C.5   rcie
+08C.6   adie
+08D     PIE2
+08D.4   eeie
+08D.6   cmie
+08D.7   osfie
+09C.6   C1OUT
+09C.7   C2OUT
+09F     ADRESH
+09F     ADSESL
+09F     ADCON1
+10C     EEDATA
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+10D     EEADR
+10E     EEDATH
+10F     EEADRH
+18C     EECON1
+18C.0   rd
+18C.1   wr
+18C.2   wren
+18C.3   wrerr
+18C.4   free
+18C.7   eepgd
+18D     EECON2
+
+ROM Allocation:
+000004  @const1030.call
+00000E  @const1032.call
+000019  @const1033.call
+000024  @const1034.call
+00002E  @const1035.call
+000038  @const1036.call
+000042  @const1037.call
+00004C  @const1038.call
+000056  @const1039.call
+000060  @const1050.call
+000062  @const1051.call
+00006C  @const1052.call
+00006E  @const1053.call
+000079  @const1054.call
+000084  @const1055.call
+00008E  @const1056.call
+000098  LCD_SetData
+0000B9  @delay_ms1
+0000CD  LCD_PulseEnable
+0000DE  LCD_PutCmd
+0000E9  LCD_Init
+00010B  LCD_PutChar
+000117  @PSTRINGC7_1006
+00016D  @ITOF
+00018A  @MULFF
+0001FF  @DIVFF
+0002C9  Doc_ADC
+00036B  @ADDFF
+0004D8  @FLT
+000517  @PSTRINGCN7_1006
+00056E  @DIV3232
+0005BD  @PRINTF_L32D_1006FPFPF
+0005E4  @FTOSD
+000800  MAIN
+000800  @cinit1
+000812  @cinit2
+
+Project Directory:
+    C:\Users\leho8\OneDrive\Máy tính\DOAN_1\code ccs\
+
+Project Files:
+    doan1_1.c                                               [15-Jun-23 16:24  CRC=B652AFC0]
+    ..\..\..\..\..\..\Program Files (x86)\PICC\Devices\16F877a.h [12-Nov-13 14:35  CRC=81334808]
+    ..\..\..\..\..\..\Program Files (x86)\PICC\Devices\def_16f877a.h [31-May-23 22:41  CRC=340C33F3]
+    ..\..\..\..\..\..\Program Files (x86)\PICC\Drivers\string.h [14-Jul-11 10:13  CRC=23EDEC8F]
+    ..\..\..\..\..\..\Program Files (x86)\PICC\Drivers\stddef.h [16-Jul-10 09:27  CRC=897CEC6C]
+    ..\..\..\..\..\..\Program Files (x86)\PICC\Drivers\ctype.h [03-Jan-08 13:55  CRC=2D1F019F]
+    ..\..\..\..\..\..\Program Files (x86)\PICC\Drivers\math.h [28-Sep-12 11:35  CRC=546412C9]
+    lcd_lib_4bit.c                                          [01-Jun-23 01:21  CRC=0B149846]
+
+Source signature=B0A949AA
+
+Units:
+    doan1_1 (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    XREF file:   doan1_1.xsym
+    Errors:      doan1_1.err
+    Ext Symbols: doan1_1.esym
+    INHX8:       doan1_1.hex
+    Symbols:     doan1_1.sym
+    List:        doan1_1.lst
+    Debug/COFF:  doan1_1.cof
+    Project:     doan1_1.ccspjt
+    Call Tree:   doan1_1.tre
+    Statistics:  doan1_1.STA

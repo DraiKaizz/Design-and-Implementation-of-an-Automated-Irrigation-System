@@ -1,0 +1,245 @@
+#include <16F877a.h>
+#include <def_16f877a.h>
+#device *=16 adc=10
+#include <string.h>
+#include <math.h>
+#FUSES NOWDT, HS, NOPUT, NOPROTECT, NODEBUG, NOBROWNOUT, NOLVP, NOCPD, NOWRT
+#use delay(clock=20000000)
+
+#include <lcd_lib_4bit.c>
+
+#DEFINE RW RB1
+
+#define LAMP PIN_D4
+#define DC   PIN_D5
+#define MB   PIN_D6
+
+#define button1 PIN_C0
+#define button2 PIN_C1
+#define button3 PIN_C2
+#define SW PIN_C3
+
+
+int button_tt1 = 0, button_tt2, button_tt3;
+int8 humidity_percent;
+unsigned char humidity_str[4];
+unsigned int8 Value1, Value2, Value3;
+unsigned int8 Inte, Humi, bien1 = 0, bien2 = 0, bien3 = 0;
+float Temp;
+
+
+unsigned int16 adc_value;
+float humidity;
+
+void Doc_ADC()
+{
+  set_adc_channel(0);//Chon Kenh ADC AN0
+  delay_us(20);//Tre toi thieu 20us de gia tri lay mau dung.
+  temp=read_adc();
+  Value1=(int8)((temp*80)/255);
+
+  set_adc_channel(1);//Chon Kenh ADC AN1
+  delay_us(20);//Tre toi thieu 20us de gia tri lay mau dung.
+ // Humi=read_adc();
+  adc_value = read_adc();
+  humidity = 100.0 - ((float)adc_value * 100.0 / 1023.0);
+
+
+  set_adc_channel(2);//Chon Kenh ADC AN2
+  delay_us(20);//Tre toi thieu 20us de gia tri lay mau dung.
+  temp=read_adc();
+  Value3=(int8)((temp*50)/1023);
+  
+}
+
+
+void main()
+{
+RW=0;
+   trisb = 0x00;
+   trisc = 0xff;
+   trisd = 0x00;
+
+
+   LCD_init();    
+   setup_adc(ADC_CLOCK_DIV_16);
+   setup_adc_ports(AN0_AN1_AN2_AN3_AN4_AN5);
+    
+      while (true)
+   {
+   
+     
+      switch(input(SW))
+      {
+         case 0:
+         
+         LCD_putcmd(0x80);
+         Printf(LCD_putchar,"Active Mode: Manual");
+         
+         if(input(button1) == 0 && button_tt1 == 0) //N?u nút nh?n du?c nh?n l?n 1
+         {
+            while(input(button1) == 0 && button_tt1 == 0);
+            delay_ms(50) ;
+            button_tt1 = 1; //C?p nh?t tr?ng thái c?a nút nh?n
+            bien1 = 1;
+         }
+
+         else if(input (button1) == 0 && button_tt1 == 1) //N?u nút nh?n du?c nh?n l?n 2
+         {
+            while(input (button1) == 1);
+            delay_ms (50) ;
+            button_tt1 = 0; //C?p nh?t tr?ng thái c?a nút nh?n
+            bien1 = 0;
+         }
+
+ 
+         if(bien1 == 1)
+         {
+            LCD_putcmd(0xC0);
+            Printf(LCD_putchar,"TB1:1    Temp:OFF ");
+            } 
+         else if(bien1 == 0){
+            LCD_putcmd(0xC0);
+            Printf(LCD_putchar,"TB1:0    Temp:OFF ");
+         }
+
+         
+         // TTHIET BI 2
+         if(input (button2) == 0 && button_tt2 == 0) //N?u nút nh?n du?c nh?n l?n 1
+         {
+            while(input (button2) == 0 && button_tt2 == 0);
+            delay_ms (50) ;
+            button_tt2 = 1; //C?p nh?t tr?ng thái c?a nút nh?n
+            bien2 = 1;
+         }
+
+         else if(input (button2) == 0 && button_tt2 == 1) //N?u nút nh?n du?c nh?n l?n 2
+         {
+            while(input (button2) == 0);
+            delay_ms (50) ;
+            button_tt2 = 0; //C?p nh?t tr?ng thái c?a nút nh?n
+            bien2 = 0;
+         }
+
+         if(bien2 == 1)
+         {
+            LCD_putcmd(0x94);
+            Printf(LCD_putchar,"TB2:1    Humi:OFF  ");
+            } 
+        else if(bien2 == 0){
+            LCD_putcmd(0x94);
+            Printf(LCD_putchar,"TB2:0    Humi:OFF  ");
+         }
+
+         
+         // THIET BI 3
+         if(input (button3) == 0 && button_tt3 == 0) //N?u nút nh?n du?c nh?n l?n 1
+         {
+            while(input (button3) == 0 && button_tt3 == 0);
+            delay_ms (50) ;
+            button_tt3 = 1; //C?p nh?t tr?ng thái c?a nút nh?n
+            bien3 = 1;
+         }
+
+         else if(input (button3) == 0 && button_tt3 == 1) //N?u nút nh?n du?c nh?n l?n 2
+         {
+            while(input (button3) == 0);
+            delay_ms (50) ;
+            button_tt3 = 0; //C?p nh?t tr?ng thái c?a nút nh?n
+            bien3 = 0;
+         }
+
+         if(bien3 == 1)
+         {
+            LCD_putcmd(0xD4);
+            Printf(LCD_putchar,"TB3:1    Inte:OFF "); 
+            } 
+          else if(bien3 == 0){
+            LCD_putcmd(0xD4);
+            Printf(LCD_putchar,"TB3:0    Inte:OFF "); 
+         }
+
+         
+         break;
+
+         case 1:
+         
+         LCD_putcmd(0x80);
+         Printf(LCD_putchar,"Active Mode: Auto  ");
+         
+         
+         Doc_ADC();
+         if(Value1 >= 30)
+         {
+            LCD_putcmd(0xC0);
+            printf(LCD_putchar,"TB1:1    Temp:%u", Value1);
+            LCD_PutChar(223);
+            LCD_PutChar("C ");
+         }
+
+         else
+         {
+            LCD_putcmd(0xC0);
+            printf(LCD_putchar,"TB1:0    Temp:%u", Value1);
+            LCD_PutChar(223);
+            LCD_PutChar("C ");
+
+         }
+         
+         if(humidity >= 30)
+         {
+          LCD_putcmd(0x94);
+          Printf(LCD_putchar,"TB2:1    Humi:%3.1f%% ", humidity); 
+         }
+         else 
+         {
+          LCD_putcmd(0x94);
+          Printf(LCD_putchar,"TB2:0    Humi:%3.1f%% ", humidity); 
+         }
+       
+       
+         break;
+      }
+   }
+  }
+  /*
+void docADC()
+{
+
+
+// Ð?c giá tr? t? kênh AN1
+set_ADC_channel(1);
+delay_us(100);
+Value2 = read_adc () ;
+humidity_percent = (Value2 / 2049.0) * 100; // Hàm chuyen DO giá tri doc duoc thành phan tram do am
+         if(humidity_percent >= 30)
+         {
+            sprintf (humidity_str, "%3d%%", humidity_percent); // Chuyen doi giá tri phan tram thành chuoi
+            LCD_putcmd(0x94);
+            Printf(LCD_putchar,"Humi:%s      TB2:1", humidity_str);    
+         }// Hien thi giá tri DO am trên LCD
+
+         else
+         {           
+            sprintf (humidity_str, "%3d%%", humidity_percent); // Chuyen doi giá tri phan tram thành chuoi
+            LCD_putcmd(0x94);
+            Printf(LCD_putchar,"Humi:%s      TB2:0", humidity_str); 
+         }
+// Ð?c giá tr? t? kênh AN2
+set_ADC_channel(2);
+delay_us(100);
+ Inte = read_adc();
+
+ Inte = Inte;
+         if(Inte >= 100)
+         {  
+            LCD_putcmd(0xD4);
+            Printf(LCD_putchar,"Inte:%4d      TB3:1",Inte);    
+         } 
+         else
+         {
+            LCD_putcmd(0xD4);
+            Printf(LCD_putchar,"Inte:%4d      TB3:0",Inte);    
+         }
+}
+*/

@@ -1,0 +1,24 @@
+[PROJECT]
+Target=doan1_1.hex
+Processor_Text=PIC16F877A
+CCSVersion=5.015
+Compiler=PCM
+[Target Data]
+FileList=doan1_1.c
+[Directories]
+Include=C:\Program Files (x86)\PICC\Devices\;C:\Program Files (x86)\PICC\Drivers\
+[doan1_1.c]
+Type=4
+[mru-list]
+1=doan1_1.c
+[Opened Files]
+1=doan1_1.c
+2=..\..\..\..\Documents\Zalo Received Files\DO_AN_1_FINAL (1).c
+3=
+4=E:\BAITAP\MPLAB\5.14.a.X\main.c
+5=lcd_lib_4bit.c
+6=..\..\..\..\..\..\Program Files (x86)\PICC\Drivers\stddef.h
+7=
+[Units]
+Count=1
+1=doan1_1 (main)

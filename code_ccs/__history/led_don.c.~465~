@@ -1,0 +1,222 @@
+
+#include <16F877A.h>
+#device ADC=10
+#include <string.h>
+#include <math.h>
+#fuses NOWDT, PUT, HS, NOPROTECT, NOLVP, XT
+#use delay(clock=20M)
+#define LAMP PIN_B0
+#define DC   PIN_B1
+#define MB   PIN_B2
+#define LCD_RS_PIN      PIN_D0   // Cac ket noi C.LCD voi vi dieu khien.
+#define LCD_RW_PIN      PIN_D1
+#define LCD_ENABLE_PIN  PIN_D2 
+#define LCD_DATA4       PIN_D4
+#define LCD_DATA5       PIN_D5
+#define LCD_DATA6       PIN_D6
+#define LCD_DATA7       PIN_D7    
+#include <lcd.c>
+#define button1 PIN_C0
+#define button2 PIN_C1
+#define button3 PIN_C2
+#define SW PIN_C3
+
+int button_tt1 = 0, button_tt2, button_tt3;
+int humidity_percent;
+char humidity_str[4];
+unsigned INT16 Value1, Value2, Value3;
+unsigned INT16 Temp, GiatriAS, bien1 = 0, bien2 = 0, bien3 = 0;
+
+void main()
+{
+   set_tris_c (0xff) ;
+   set_tris_d (0); // XUAT DATA
+   lcd_init (); // KHOI TAO LCD
+   delay_ms (100) ;
+   lcd_putc ('\f'); // xoa khoang trang
+   set_tris_a (0xff) ;
+   set_tris_b (0x00) ;
+   
+   setup_adc (ADC_CLOCK_INTERNAL) ;
+   setup_adc_ports (AN0_AN1_AN2_AN3_AN4_AN5) ;
+   output_low (LAMP) ;
+   output_low (DC) ;
+   output_low (MB) ;
+
+   WHILE (true)
+   {
+      
+      SWITCH (input(SW))
+      {
+         CASE 0:
+         lcd_gotoxy (1, 1);
+         lcd_putc ("Active Mode: Manual") ;
+         
+         IF (input (button1) == 0&&button_tt1 == 0) //N?u nút nh?n du?c nh?n l?n 1
+         {
+            WHILE (input(button1) == 0 && button_tt1 == 0);
+            delay_ms (100) ;
+            button_tt1 = 1; //C?p nh?t tr?ng thái c?a nút nh?n
+            output_high (LAMP); //B?t dèn LED
+            bien1 = 1;
+         }
+
+         else IF (input (button1) == 0&&button_tt1 == 1) //N?u nút nh?n du?c nh?n l?n 2
+         {
+            WHILE (input (button1) == 1);
+            delay_ms (100) ;
+            button_tt1 = 0; //C?p nh?t tr?ng thái c?a nút nh?n
+            output_low (LAMP); //T?t dèn LED
+            bien1 = 0;
+         }
+
+         
+         IF (bien1 == 1)
+         {
+            lcd_gotoxy (1, 2);
+            delay_ms (100) ;
+            printf (lcd_putc, "CBAS:OFF    TB1:1");
+            } else IF (bien1 == 0){
+            lcd_gotoxy (1, 2);
+            delay_ms(100);
+            printf (lcd_putc, "CBAS:OFF    TB1:0");
+         }
+
+         
+         // TTHIET BI 2
+         IF (input (button2) == 0&&button_tt2 == 0) //N?u nút nh?n du?c nh?n l?n 1
+         {
+            WHILE (input (button2) == 0&&button_tt2 == 0);
+            delay_ms (50) ;
+            button_tt2 = 1; //C?p nh?t tr?ng thái c?a nút nh?n
+            output_high (DC); //B?t dèn LED
+            bien2 = 1;
+         }
+
+         else IF (input (button2) == 0&&button_tt2 == 1) //N?u nút nh?n du?c nh?n l?n 2
+         {
+            WHILE (input (button2) == 0);
+            delay_ms (50) ;
+            button_tt2 = 0; //C?p nh?t tr?ng thái c?a nút nh?n
+            output_low (DC); //T?t dèn LED
+            bien2 = 0;
+         }
+
+         IF (bien2 == 1)
+         {
+            lcd_gotoxy (21, 1);
+            delay_ms (50);
+            printf (lcd_putc, "CBND:OFF    TB2:1");
+            } else IF (bien2 == 0){
+            lcd_gotoxy (21, 1);
+            delay_ms (50) ;
+            printf (lcd_putc, "CBND:OFF    TB2:0");
+         }
+
+         
+         // THIET BI 3
+         IF (input (button3) == 0&&button_tt3 == 0) //N?u nút nh?n du?c nh?n l?n 1
+         {
+            WHILE (input (button3) == 0&&button_tt3 == 0);
+            delay_ms (50) ;
+            button_tt3 = 1; //C?p nh?t tr?ng thái c?a nút nh?n
+            output_high (MB); //B?t dèn LED
+            bien3 = 1;
+         }
+
+         else IF (input (button3) == 0&&button_tt3 == 1) //N?u nút nh?n du?c nh?n l?n 2
+         {
+            WHILE (input (button3) == 0);
+            delay_ms (50) ;
+            button_tt3 = 0; //C?p nh?t tr?ng thái c?a nút nh?n
+            output_low (MB); //T?t dèn LED
+            bien3 = 0;
+         }
+
+         IF (bien3 == 1)
+         {
+            lcd_gotoxy (21, 2);
+            delay_ms (50);
+            printf (lcd_putc, "CBDA:OFF    TB3:1");
+            } else IF (bien3 == 0){
+            lcd_gotoxy (21, 2);
+            delay_ms (50) ;
+            printf (lcd_putc, "CBDA:OFF    TB3:0");
+         }
+
+         
+         BREAK;
+
+         CASE 1:
+         lcd_gotoxy (1, 1);
+         lcd_putc ("Active Mode: AUTO");
+         
+         set_adc_channel (0); //Chon Kenh ADC AN0
+         delay_us (20); //Tre toi thieu 20us de gia tri lay mau dung.
+         GiatriAS = read_adc();
+         Value1 = GiatriAS;
+
+         IF (Value1 >= 200)
+         {
+            output_high(LAMP);
+            lcd_gotoxy (1, 2);
+            printf (lcd_putc, "CBAS:%04ld    TB1:1", Value1);
+         }
+
+         ELSE
+         {
+            output_low (LAMP) ;
+            lcd_gotoxy (1, 2);
+            printf (lcd_putc, "CBAS:%04ld    TB1:0", Value1);
+         }
+
+         
+         set_adc_channel (1); //Chon Kenh ADC AN1
+         delay_us (20); //Tre toi thieu 20us de gia tri lay mau dung.
+         Temp = read_adc () ;
+         Value2 = (Temp / 2) - 1;
+
+         IF (Value2 >= 30)
+         {
+            output_high (DC) ;
+            lcd_gotoxy (21, 1);
+            printf (lcd_putc, "CMND:%3ld     TB2:1", Value2);
+         }
+
+         ELSE
+         {
+            output_low (DC) ;
+            lcd_gotoxy (21, 1);
+            printf (lcd_putc, "CMND:%3ld     TB2:0", Value2);
+         }
+
+         
+         set_adc_channel (2); //Chon Kenh ADC AN1
+         delay_us(20); //Tre toi thieu 20us de gia tri lay mau dung.
+         Value3 = read_adc () ;
+         humidity_percent = (Value3 / 1023.0) * 100; // Hàm chuyen DO giá tri doc duoc thành phan tram do am
+         IF (humidity_percent >= 30)
+         {
+            output_high (MB) ;
+            sprintf (humidity_str, "%3d%%", humidity_percent); // Chuyen doi giá tri phan tram thành chuoi
+            lcd_gotoxy (21, 2);
+            printf (lcd_putc, "CBDA:%3s    TB3:1", humidity_str);
+         }// Hien thi giá tri DO am trên LCD
+
+         ELSE
+         {
+            output_low (MB) ;
+            sprintf (humidity_str, " %3d%%", humidity_percent); // Chuyen doi giá tri phan tram thành chuoi
+            lcd_gotoxy (21, 2);
+            printf (lcd_putc, "CBDA:%s     TB3:0", humidity_str);
+         }
+
+         BREAK;
+
+         DEFAULT:
+         BREAK;
+      }
+   }
+
+}
+
